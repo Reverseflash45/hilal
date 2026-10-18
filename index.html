@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hilal — hisab awal bulan hijriah untuk 514 kabupaten/kota</title>
+    <meta
+      name="description"
+      content="Tinggi dan elongasi hilal saat magrib di setiap kabupaten/kota, dibandingkan dengan kriteria MABIMS dan wujudul hilal. Perkiraan awal Ramadan, Syawal, dan Zulhijah dari hitungan astronomi."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hilal-id.vercel.app/" />
+    <meta property="og:title" content="Hilal — hisab awal bulan hijriah" />
+    <meta property="og:description" content="Seberapa tinggi hilal di daerahmu saat magrib? Peta 514 kabupaten/kota dan perkiraan awal bulan menurut dua kriteria." />
+    <meta property="og:image" content="https://hilal-id.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://hilal-id.vercel.app/" />
+    <meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0f1f" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/ikon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="kepala">
+      <a class="merek" href="/">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3.2A9 9 0 1 0 20.8 15 7.4 7.4 0 0 1 15.5 3.2Z" /></svg>
+        Hilal
+      </a>
+      <nav><a href="#daerahmu">Daerahmu</a><a href="#kalender">12 bulan</a><a href="#kriteria">Kriteria</a><a href="#tentang">Tentang</a></nav>
+    </header>
+
+    <main>
+      <section class="pembuka" aria-labelledby="judul">
+        <p class="label">Hisab hilal · 514 kabupaten/kota</p>
+        <h1 id="judul">Kapan hilal <em>terlihat?</em></h1>
+        <p class="lead">
+          Awal bulan hijriah ditandai hilal, sabit tipis pertama sesudah bulan baru. Halaman ini menghitung posisi bulan saat
+          magrib di setiap kabupaten/kota, lalu membandingkannya dengan dua kriteria yang dikenal di Indonesia.
+        </p>
+
+        <div class="pilih-bulan" role="group" aria-label="Pilih bulan" data-pilih-bulan></div>
+
+        <div class="ringkas" aria-live="polite">
+          <div class="ringkas-kepala">
+            <h2 class="nama-bulan" data-nama-bulan></h2>
+            <dl class="waktu-ijtimak" data-waktu></dl>
+          </div>
+          <div class="putusan" data-putusan></div>
+          <p class="beda" data-beda hidden></p>
+        </div>
+
+        <div class="alat-peta">
+          <p class="judul-grafik" data-judul-peta></p>
+          <div class="pilihan" role="group" aria-label="Yang ditampilkan">
+            <button type="button" data-ukuran="tinggi" aria-pressed="true">Tinggi</button>
+            <button type="button" data-ukuran="elongasi" aria-pressed="false">Elongasi</button>
+          </div>
+        </div>
+        <div class="peta" id="peta" role="img" aria-label="Peta tinggi hilal saat magrib di kabupaten/kota Indonesia"></div>
+        <div class="legenda" data-legenda></div>
+      </section>
+
+      <section class="bagian" id="daerahmu" aria-labelledby="judul-daerah">
+        <p class="label">Daerahmu</p>
+        <h2 id="judul-daerah">Langit barat saat <em>magrib</em></h2>
+        <form class="cari" id="cari" autocomplete="off">
+          <div class="combo">
+            <label for="daerah" class="sr-only">Kabupaten atau kota</label>
+            <input id="daerah" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="saran" placeholder="Ketik kabupaten atau kota" spellcheck="false" />
+            <ul id="saran" role="listbox" class="saran" hidden></ul>
+          </div>
+        </form>
+        <div class="daerah-grid">
+          <div>
+            <p class="judul-grafik" data-judul-langit></p>
+            <div class="langit" id="langit" role="img"></div>
+          </div>
+          <div>
+            <dl class="nilai" data-nilai></dl>
+            <ul class="cek" data-cek></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="bagian" id="kalender" aria-labelledby="judul-kalender">
+        <p class="label">Dua belas bulan ke depan</p>
+        <h2 id="judul-kalender">Kapan kedua kriteria <em>sepakat?</em></h2>
+        <p class="pengantar">
+          Tinggi dan elongasi di sini adalah nilai tertinggi di antara 514 kabupaten/kota. Perkiraan tanggal 1 memakai satu
+          kesatuan wilayah Indonesia: bila kriteria terpenuhi di salah satu daerah, bulan baru dimulai keesokan harinya; bila
+          tidak, bulan berjalan digenapkan.
+        </p>
+        <div class="tabel-bungkus">
+          <table class="tabel">
+            <thead>
+              <tr>
+                <th scope="col">Bulan</th>
+                <th scope="col">Ijtimak (WIB)</th>
+                <th scope="col">Tinggi maks.</th>
+                <th scope="col">Elongasi</th>
+                <th scope="col">1 menurut MABIMS</th>
+                <th scope="col">1 menurut wujudul hilal</th>
+              </tr>
+            </thead>
+            <tbody data-kalender></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="bagian" id="kriteria" aria-labelledby="judul-kriteria">
+        <p class="label">Kenapa bisa berbeda?</p>
+        <h2 id="judul-kriteria">Dua garis batas di <em>langit</em></h2>
+        <div class="dua-kolom">
+          <div class="kriteria-teks">
+            <p>
+              <strong>Wujudul hilal</strong> cukup mensyaratkan ijtimak terjadi sebelum matahari terbenam dan bulan terbenam
+              sesudah matahari. Asal hilal sudah di atas ufuk, berapa pun tingginya, bulan baru dimulai. Kriteria ini lama dipakai
+              Muhammadiyah, yang kini beralih ke Kalender Hijriah Global Tunggal.
+            </p>
+            <p>
+              <strong>MABIMS</strong>, kesepakatan menteri agama Brunei, Indonesia, Malaysia, dan Singapura, dalam versi baru
+              yang dipakai Indonesia sejak 2022 mensyaratkan hilal cukup tinggi dan cukup jauh dari matahari agar mungkin terlihat: tinggi minimal 3° dan elongasi
+              minimal 6,4°. Kriteria ini dipakai pemerintah sebagai bahan sidang isbat.
+            </p>
+            <p>
+              Bila hilal sudah di atas ufuk tetapi masih rendah, kedua kriteria memberi jawaban berbeda. Titik-titik di grafik
+              adalah hilal tertinggi di Indonesia untuk tiap bulan; yang berongga adalah kasus nyata ketika awal bulan memang
+              berbeda.
+            </p>
+          </div>
+          <div class="grafik" id="sebar" role="img"></div>
+        </div>
+      </section>
+
+      <section class="bagian tentang" id="tentang" aria-labelledby="judul-tentang">
+        <h2 id="judul-tentang">Tentang perhitungan</h2>
+        <ul>
+          <li>
+            Posisi bulan dan matahari dihitung di peramban dengan
+            <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a> (Don Cross, lisensi MIT), ketelitiannya
+            sekitar satu menit busur.
+          </li>
+          <li>
+            Tinggi hilal adalah tinggi toposentrik pusat bulan saat matahari terbenam, tanpa refraksi; elongasi adalah jarak sudut
+            geosentrik bulan dari matahari. Cara mengukur yang berbeda (misalnya tepi atas piringan bulan, atau dengan refraksi)
+            dapat menggeser angka sekitar setengah derajat.
+          </li>
+          <li>
+            Wujudul hilal diperiksa dari saat bulan terbenam, yang dihitung untuk tepi atas piringan bulan dengan refraksi. Karena
+            itu kriteria ini bisa terpenuhi walaupun tinggi pusat bulan di peta sedikit di bawah 0°.
+          </li>
+          <li>
+            Pengamatan dilakukan pada magrib tanggal ijtimak, atau magrib berikutnya bila ijtimak terjadi sesudah pukul 18.00
+            WIB. Lokasi tiap daerah adalah titik tengah wilayahnya (geoBoundaries: BPS, WFP, OCHA ROAP, CC BY 3.0 IGO) di
+            ketinggian permukaan laut.
+          </li>
+          <li>
+            Perhitungan diuji terhadap penetapan yang sudah terjadi: Ramadan 1444 dan Syawal 1445 yang serentak, serta Syawal
+            1444, Zulhijah 1444, dan Ramadan 1445 yang berbeda.
+          </li>
+          <li>
+            Ini <strong>hasil hitungan, bukan penetapan</strong>. Awal bulan resmi ditetapkan Kementerian Agama melalui sidang
+            isbat setelah rukyat, dan ormas Islam menerbitkan ketetapannya sendiri.
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="kaki">
+      <p>Dibuat oleh Rafi Fernandito · <a href="https://github.com/Reverseflash45/hilal">kode sumber</a></p>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
