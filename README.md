@@ -2,7 +2,7 @@
 
 ![Hilal: langit barat saat magrib](public/og.png)
 
-**[Buka Hilal](https://hilal-id.vercel.app)**
+**[Buka Hilal](https://hilal.raffstw.my.id)**
 
 Seberapa tinggi hilal di daerahmu saat magrib? Hilal menghitung posisi bulan dan matahari
 setelah setiap ijtimak untuk 514 kabupaten/kota, lalu membandingkannya dengan dua kriteria
