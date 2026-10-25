@@ -1,7 +1,8 @@
-import "@fontsource-variable/bricolage-grotesque";
-import "@fontsource/atkinson-hyperlegible/400.css";
-import "@fontsource/atkinson-hyperlegible/700.css";
-import "@fontsource-variable/geist-mono";
+import "@fontsource/amiri/700";
+import "@fontsource/amiri/700-italic";
+import "@fontsource/mulish/400";
+import "@fontsource/mulish/600";
+import "@fontsource/mulish/800";
 import "./gaya.css";
 import {
   DAERAH,

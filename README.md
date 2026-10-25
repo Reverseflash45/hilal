@@ -17,8 +17,8 @@ yang dikenal di Indonesia: **MABIMS** (tinggi ≥ 3°, elongasi ≥ 6,4°) dan *
   harinya, dengan garis batas 3°.
 - **Tabel dan grafik sebaran** yang memperlihatkan kapan kedua kriteria sepakat dan kapan
   tidak, bersama kasus nyata ketika awal bulan memang berbeda.
-- Tautan per bulan dan daerah (`#bulan=ramadan-1448&daerah=kota-jakarta-pusat`). Mode gelap
-  mengikuti sistem.
+- Tautan per bulan dan daerah (`#bulan=ramadan-1448&daerah=kota-jakarta-pusat`).
+- Tampilan senja magrib: langit biru tua ke teal, aksen jingga ufuk, sabit tipis.
 
 ## Perhitungan
 
@@ -55,4 +55,5 @@ npm run build
 ```
 
 Vite + TypeScript, tanpa framework UI; peta dengan d3-geo dan topojson-client. Peta warna
-tinggi hilal divergen di 0°, divalidasi untuk latar terang dan gelap.
+tinggi hilal divergen di 0°: lembayung di bawah ufuk, emas di atasnya, tiap sisi
+divalidasi ordinal terhadap latar peta #0f2433.

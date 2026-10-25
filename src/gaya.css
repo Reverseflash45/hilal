@@ -1,67 +1,38 @@
 :root {
-  color-scheme: light;
-  --kertas: #f4f0e8;
-  --kertas-2: #ebe5d9;
-  --kertas-3: #dfd7c7;
-  --tinta: #1d1b3a;
-  --tinta-2: #45435f;
-  --samar: #66647a;
-  --garis: #d8d0c1;
-  --garis-kuat: #b4ab99;
-  --aksen: #8a5a0e;
-  --aksen-lembut: #f0dfba;
-  --laut: #e9e4da;
-  --sorot: #2f4fa3;
-  --ya: #2f6b3a;
-  --tidak: #9a3324;
-  /* peta: divergen di 0° (divalidasi per sisi) */
-  --biru-1: #8c9fc2;
-  --biru-2: #5b74a3;
-  --biru-3: #2e4677;
-  --netral: #d2cbbd;
-  --emas-1: #d29a35;
-  --emas-2: #b47a1c;
-  --emas-3: #7f520c;
+  /* senja maghrib: langit biru tua ke teal, ufuk jingga, sabit tipis */
+  color-scheme: dark;
+  --kertas: #122838;
+  --kertas-2: #1a3446;
+  --kertas-3: #24435a;
+  --tinta: #f3efe6;
+  --tinta-2: #c4ccd2;
+  --samar: #98a7b2;
+  --garis: #24435a;
+  --garis-kuat: #3a5d74;
+  --aksen: #f4a77a;
+  --aksen-lembut: #1f3d50;
+  --laut: #0f2433;
+  --sorot: #9ec5ff;
+  --ya: #7fd18f;
+  --tidak: #ff9a85;
+  /* peta: divergen di 0°, lembayung di bawah ufuk, emas di atas (divalidasi per sisi di atas --laut) */
+  --biru-1: #665a99;
+  --biru-2: #9285c9;
+  --biru-3: #c9bdf2;
+  --netral: #46586a;
+  --emas-1: #8a5d16;
+  --emas-2: #c9902f;
+  --emas-3: #f2cd7a;
   /* langit senja */
-  --langit-atas: #3b4a7a;
-  --langit-tengah: #b88a8f;
-  --langit-ufuk: #f2b26b;
-  --tanah: #2a2638;
+  --langit-atas: #0f1d33;
+  --langit-tengah: #3c4a6a;
+  --langit-ufuk: #e7956d;
+  --tanah: #06070f;
   --surya: #ffcf6b;
-  --bulan: #fff6d9;
-  --huruf-judul: "Bricolage Grotesque Variable", system-ui, sans-serif;
-  --huruf: "Atkinson Hyperlegible", system-ui, sans-serif;
-  --mono: "Geist Mono Variable", ui-monospace, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --kertas: #0c0f1f;
-    --kertas-2: #141831;
-    --kertas-3: #1d2242;
-    --tinta: #ece9f5;
-    --tinta-2: #c2c0d6;
-    --samar: #9593ad;
-    --garis: #262b4b;
-    --garis-kuat: #3b4168;
-    --aksen: #f0c45a;
-    --aksen-lembut: #3d3112;
-    --laut: #10142a;
-    --sorot: #8fb0ff;
-    --ya: #7fd18f;
-    --tidak: #ff9a85;
-    --biru-1: #33476e;
-    --biru-2: #5671a3;
-    --biru-3: #90a9d6;
-    --netral: #3a3d52;
-    --emas-1: #8a5d16;
-    --emas-2: #c9902f;
-    --emas-3: #f2cd7a;
-    --langit-atas: #0f1430;
-    --langit-tengah: #4a3f66;
-    --langit-ufuk: #c9784a;
-    --tanah: #06070f;
-  }
+  --bulan: #fff7e0;
+  --huruf-judul: "Amiri", Georgia, serif;
+  --huruf: "Mulish", system-ui, sans-serif;
+  --mono: "Mulish", system-ui, sans-serif;
 }
 
 *,
@@ -71,9 +42,17 @@
 }
 body {
   margin: 0;
-  background: var(--kertas);
   color: var(--tinta);
   font: 400 16px/1.6 var(--huruf);
+  font-variant-numeric: tabular-nums;
+  /* zenit gelap di atas, makin ke bawah langit sisa senja */
+  background:
+    radial-gradient(1px 1px at 12% 6%, rgb(255 255 255 / 0.7) 50%, transparent 51%) 0 0 / 100% 900px no-repeat,
+    radial-gradient(1px 1px at 38% 3%, rgb(255 255 255 / 0.55) 50%, transparent 51%) 0 0 / 100% 900px no-repeat,
+    radial-gradient(1.2px 1.2px at 63% 9%, rgb(255 255 255 / 0.6) 50%, transparent 51%) 0 0 / 100% 900px no-repeat,
+    radial-gradient(1px 1px at 86% 4%, rgb(255 255 255 / 0.5) 50%, transparent 51%) 0 0 / 100% 900px no-repeat,
+    linear-gradient(180deg, #0b1828 0, #17374a 420px, #1f4a5e 760px, var(--kertas) 1100px) 0 0 / 100% 1100px no-repeat,
+    var(--kertas);
 }
 a {
   color: inherit;
@@ -113,17 +92,19 @@ h1,
 h2 {
   font-family: var(--huruf-judul);
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
+  text-wrap: balance;
 }
 h1 {
   margin: 12px 0 0;
-  font-size: clamp(44px, 7.5vw, 96px);
-  line-height: 0.98;
+  font-size: clamp(46px, 7.8vw, 104px);
+  line-height: 1.02;
 }
 h1 em,
 h2 em {
-  font-style: normal;
+  font-style: italic;
   color: var(--aksen);
+  text-shadow: 0 0 28px rgb(244 167 122 / 0.35);
 }
 h2 {
   margin: 8px 0 0;
@@ -170,7 +151,22 @@ main,
 
 /* ---------- pembuka ---------- */
 .pembuka {
+  position: relative;
   padding: clamp(36px, 6vw, 72px) 0 0;
+}
+/* sabit tipis di langit barat */
+.pembuka::before {
+  content: "";
+  position: absolute;
+  top: clamp(24px, 5vw, 56px);
+  right: clamp(8px, 6vw, 80px);
+  width: clamp(70px, 11vw, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* sisi terang menghadap ke bawah, ke matahari yang baru terbenam */
+  box-shadow: inset 2px clamp(-8px, -0.9vw, -5px) 0 0 var(--bulan);
+  filter: drop-shadow(0 0 12px rgb(255 247 224 / 0.45));
+  pointer-events: none;
 }
 .lead {
   margin: 20px 0 0;
