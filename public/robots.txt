@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hilal.raffstw.my.id/sitemap.xml
