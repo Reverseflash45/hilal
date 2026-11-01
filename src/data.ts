@@ -79,6 +79,44 @@ export function hitungBulan(ij: Ijtimak): HasilBulan {
   return hasil;
 }
 
+/** Simpan hasil yang dihitung di Web Worker ke tembolok yang sama dengan hitungBulan. */
+export function simpanHasil(h: HasilBulan) {
+  tembolok.set(h.ij.waktu.getTime(), h);
+}
+
+let pekerja: Worker | null = null;
+let nomor = 0;
+const menunggu = new Map<number, (h: HasilBulan) => void>();
+
+/** Hitung satu bulan di Web Worker (jatuh ke hitungBulan biasa bila Worker tidak tersedia). */
+export function hitungBulanNanti(ij: Ijtimak): Promise<HasilBulan> {
+  const ada = tembolok.get(ij.waktu.getTime());
+  if (ada) return Promise.resolve(ada);
+  if (!pekerja && typeof Worker !== "undefined") {
+    try {
+      pekerja = new Worker(new URL("./pekerja.ts", import.meta.url), { type: "module" });
+      pekerja.onmessage = (e: MessageEvent<{ id: number; hasil: HasilBulan }>) => {
+        const selesai = menunggu.get(e.data.id);
+        menunggu.delete(e.data.id);
+        selesai?.(e.data.hasil);
+      };
+    } catch {
+      pekerja = null;
+    }
+  }
+  if (!pekerja) return Promise.resolve(hitungBulan(ij));
+  const id = ++nomor;
+  return new Promise((selesai) => {
+    menunggu.set(id, (h) => {
+      // Hasil dari Worker adalah salinan: kembalikan objek ijtimak asli supaya perbandingan identitas tetap berlaku.
+      h.ij = ij;
+      simpanHasil(h);
+      selesai(h);
+    });
+    pekerja!.postMessage({ id, ij });
+  });
+}
+
 /* ---------- teks ---------- */
 const BULAN = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 const BULAN_PENDEK = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];

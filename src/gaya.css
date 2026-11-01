@@ -782,3 +782,8 @@ main,
     display: none;
   }
 }
+
+/* pesan tempat peta sebelum dibuat (rasio rata-rata peta Indonesia di sini) */
+#peta:empty {
+  aspect-ratio: 1000 / 388;
+}

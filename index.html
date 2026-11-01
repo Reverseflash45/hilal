@@ -19,6 +19,9 @@
     <link rel="canonical" href="https://hilal.raffstw.my.id/" />
     <meta name="theme-color" content="#0b1828" />
     <link rel="icon" href="/ikon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/node_modules/@fontsource/amiri/files/amiri-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource/mulish/files/mulish-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- kerangka pembuka di bawah adalah cuplikan render; skrip menggantinya dengan bulan terkini -->
   </head>
   <body>
     <header class="kepala">
@@ -38,26 +41,32 @@
           magrib di setiap kabupaten/kota, lalu membandingkannya dengan dua kriteria yang dikenal di Indonesia.
         </p>
 
-        <div class="pilih-bulan" role="group" aria-label="Pilih bulan" data-pilih-bulan></div>
+        <div class="pilih-bulan" role="group" aria-label="Pilih bulan" data-pilih-bulan><button type="button" data-bulan="0" class="" aria-pressed="false"><span>Jumadilakhir 1448</span><small>9 Nov 2026</small></button><button type="button" data-bulan="1" class="" aria-pressed="false"><span>Rajab 1448</span><small>9 Des 2026</small></button><button type="button" data-bulan="2" class="" aria-pressed="false"><span>Syakban 1448</span><small>8 Jan 2027</small></button><button type="button" data-bulan="3" class="penting" aria-pressed="true"><span>Ramadan 1448</span><small>6 Feb 2027</small></button><button type="button" data-bulan="4" class="penting" aria-pressed="false"><span>Syawal 1448</span><small>8 Mar 2027</small></button><button type="button" data-bulan="5" class="" aria-pressed="false"><span>Zulkaidah 1448</span><small>7 Apr 2027</small></button><button type="button" data-bulan="6" class="penting" aria-pressed="false"><span>Zulhijah 1448</span><small>6 Mei 2027</small></button><button type="button" data-bulan="7" class="" aria-pressed="false"><span>Muharam 1449</span><small>5 Jun 2027</small></button><button type="button" data-bulan="8" class="" aria-pressed="false"><span>Safar 1449</span><small>4 Jul 2027</small></button><button type="button" data-bulan="9" class="" aria-pressed="false"><span>Rabiulawal 1449</span><small>2 Agu 2027</small></button><button type="button" data-bulan="10" class="" aria-pressed="false"><span>Rabiulakhir 1449</span><small>1 Sep 2027</small></button><button type="button" data-bulan="11" class="" aria-pressed="false"><span>Jumadilawal 1449</span><small>30 Sep 2027</small></button></div>
 
-        <div class="ringkas" aria-live="polite">
-          <div class="ringkas-kepala">
-            <h2 class="nama-bulan" data-nama-bulan></h2>
-            <dl class="waktu-ijtimak" data-waktu></dl>
+        <div class="ringkas" aria-live="polite"><div class="ringkas-kepala">
+            <h2 class="nama-bulan" data-nama-bulan="">Ramadan <span>1448 H</span></h2>
+            <dl class="waktu-ijtimak" data-waktu=""><div><dt>Ijtimak</dt><dd>Sabtu, 6 Februari 2027, pukul 22.56 WIB</dd></div><div><dt>Pengamatan</dt><dd>Magrib Minggu, 7 Februari 2027 <span class="catatan-kecil">karena ijtimak terjadi sesudah magrib</span></dd></div></dl>
           </div>
-          <div class="putusan" data-putusan></div>
-          <p class="beda" data-beda hidden></p>
-        </div>
+          <div class="putusan" data-putusan=""><article class="terpenuhi">
+      <p class="label">MABIMS</p>
+      <p class="syarat">tinggi ≥ 3° dan elongasi ≥ 6,4°</p>
+      <p class="status">Terpenuhi di <strong>514</strong> dari 514 daerah</p>
+      <p class="tanggal-awal">Puasa pertama Senin, 8 Februari 2027</p>
+    </article><article class="terpenuhi">
+      <p class="label">Wujudul hilal</p>
+      <p class="syarat">bulan terbenam sesudah matahari</p>
+      <p class="status">Terpenuhi di <strong>514</strong> dari 514 daerah</p>
+      <p class="tanggal-awal">Puasa pertama Senin, 8 Februari 2027</p>
+    </article></div>
+          <p class="beda sama" data-beda="">Kedua kriteria memberi tanggal yang sama.</p></div>
 
-        <div class="alat-peta">
-          <p class="judul-grafik" data-judul-peta></p>
+        <div class="alat-peta"><p class="judul-grafik" data-judul-peta="">Tinggi hilal saat magrib, Minggu, 7 Februari 2027 <span class="redup">· hilal tertinggi di Kota Sabang: 7,07°, elongasi 9,18°</span></p>
           <div class="pilihan" role="group" aria-label="Yang ditampilkan">
             <button type="button" data-ukuran="tinggi" aria-pressed="true">Tinggi</button>
             <button type="button" data-ukuran="elongasi" aria-pressed="false">Elongasi</button>
-          </div>
-        </div>
+          </div></div>
         <div class="peta" id="peta" role="img" aria-label="Peta tinggi hilal saat magrib di kabupaten/kota Indonesia"></div>
-        <div class="legenda" data-legenda></div>
+        <div class="legenda" data-legenda><div class="gradasi" style="background:linear-gradient(90deg,rgb(201, 189, 242) 0%,rgb(187, 175, 232) 6.25%,rgb(174, 161, 222) 12.5%,rgb(160, 147, 211) 18.75%,rgb(146, 133, 201) 25%,rgb(131, 119, 185) 31.25%,rgb(117, 104, 169) 37.5%,rgb(102, 90, 153) 43.75%,rgb(70, 88, 106) 50%,rgb(138, 93, 22) 56.25%,rgb(170, 119, 35) 62.5%,rgb(201, 144, 47) 68.75%,rgb(209, 156, 62) 75%,rgb(217, 168, 77) 81.25%,rgb(226, 181, 92) 87.5%,rgb(234, 193, 107) 93.75%,rgb(242, 205, 122) 100%)"></div><div class="tanda"><span style="left:0%">−8°</span><span style="left:50%">0°</span><span style="left:68.75%">3° MABIMS</span><span style="left:100%">+8°</span></div></div>
       </section>
 
       <section class="bagian" id="daerahmu" aria-labelledby="judul-daerah">

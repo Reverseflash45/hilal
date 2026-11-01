@@ -12,6 +12,7 @@ import {
   cariDaerah,
   derajat,
   hitungBulan,
+  hitungBulanNanti,
   lat,
   lon,
   namaZona,
@@ -200,24 +201,20 @@ let titikSebar: TitikSebar[] = [];
 function hitungBertahap() {
   const tbody = $("[data-kalender]");
   tbody.innerHTML = BULAN_DEPAN.map((ij, i) => `<tr data-baris="${i}"><th scope="row">${namaLengkap(ij)}</th><td colspan="5" class="redup">menghitung…</td></tr>`).join("");
-  const antre: (() => void)[] = BULAN_DEPAN.map((ij, i) => () => {
-    const h = hitungBulan(ij);
-    tbody.querySelector(`[data-baris="${i}"]`)!.outerHTML = barisKalender(h, i);
-    titikSebar.push({ label: namaLengkap(ij), tinggi: h.tertinggi.h.tinggi, elongasi: h.tertinggi.h.elongasi, sejarah: false, ket: `perkiraan 1 ${NAMA_BULAN[ij.bulan]}: ${teksTanggalPendek(h.awalMabims)} (MABIMS), ${teksTanggalPendek(h.awalWujud)} (wujud)` });
-  });
-  for (const s of SEJARAH)
-    antre.push(() => {
+  // Hisab tiap bulan berjalan di Web Worker, berurutan; baris tabel terisi satu per satu.
+  void (async () => {
+    for (const [i, ij] of BULAN_DEPAN.entries()) {
+      const h = await hitungBulanNanti(ij);
+      tbody.querySelector(`[data-baris="${i}"]`)!.outerHTML = barisKalender(h, i);
+      titikSebar.push({ label: namaLengkap(ij), tinggi: h.tertinggi.h.tinggi, elongasi: h.tertinggi.h.elongasi, sejarah: false, ket: `perkiraan 1 ${NAMA_BULAN[ij.bulan]}: ${teksTanggalPendek(h.awalMabims)} (MABIMS), ${teksTanggalPendek(h.awalWujud)} (wujud)` });
+    }
+    for (const s of SEJARAH) {
       const [ij] = daftarIjtimak(new Date(s.dari), 1);
-      const h = hitungBulan(ij);
+      const h = await hitungBulanNanti(ij);
       titikSebar.push({ label: namaLengkap(ij), tinggi: h.tertinggi.h.tinggi, elongasi: h.tertinggi.h.elongasi, sejarah: true, ket: s.ket });
-    });
-  const jalan = () => {
-    const kerja = antre.shift();
-    if (!kerja) return gambarSebar($("#sebar"), titikSebar);
-    kerja();
-    setTimeout(jalan, 0);
-  };
-  setTimeout(jalan, 0);
+    }
+    gambarSebar($("#sebar"), titikSebar);
+  })();
 }
 $("[data-kalender]").addEventListener("click", (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>("[data-ke-bulan]");
