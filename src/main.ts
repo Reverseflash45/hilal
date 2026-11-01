@@ -11,12 +11,14 @@ import {
   type Tanggal,
   cariDaerah,
   derajat,
-  hitungBulan,
+  hisabDaerah,
   hitungBulanNanti,
   lat,
   lon,
   namaZona,
+  pengamatanBulan,
   samaTanggal,
+  sudahAda,
   teksJam,
   teksLag,
   teksTanggal,
@@ -90,9 +92,22 @@ function pilihBulan(ij: Ijtimak, gulir = false) {
   if (gulir) $(".pembuka").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 
+/** Jalankan `gambar` dengan hasil 514 daerah bulan terpilih; bila belum ada, hitung dulu di Web Worker
+    (halaman tetap menampilkan isi sebelumnya atau cuplikan pra-render) supaya thread utama tidak macet. */
+function denganHasil(gambar: (h: HasilBulan) => void) {
+  const ij = bulanTerpilih;
+  const ada = sudahAda(ij);
+  if (ada) return gambar(ada);
+  void hitungBulanNanti(ij).then((h) => {
+    if (bulanTerpilih === ij) gambar(h);
+  });
+}
+
 /* ---------- ringkasan ---------- */
 function gambarRingkas() {
-  const h = hitungBulan(bulanTerpilih);
+  denganHasil(isiRingkas);
+}
+function isiRingkas(h: HasilBulan) {
   const ij = bulanTerpilih;
   $("[data-nama-bulan]").innerHTML = `${NAMA_BULAN[ij.bulan]} <span>${ij.tahun} H</span>`;
   $("[data-waktu]").innerHTML =
@@ -125,7 +140,9 @@ function teksPeta(h: HasilBulan, id: string): string {
 }
 
 function gambarPetaIndonesia() {
-  const h = hitungBulan(bulanTerpilih);
+  denganHasil(isiPeta);
+}
+function isiPeta(h: HasilBulan) {
   $("[data-judul-peta]").innerHTML = `${ukuran === "tinggi" ? "Tinggi" : "Elongasi"} hilal saat magrib, ${teksTanggal(h.pengamatan, true)} <span class="redup">· hilal tertinggi di ${esc(h.tertinggi.d.nama)}: ${derajat(h.tertinggi.h.tinggi)}, elongasi ${derajat(h.tertinggi.h.elongasi)}</span>`;
   gambarLegenda($("[data-legenda]"), ukuran);
   $$<HTMLButtonElement>("[data-ukuran]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ukuran === ukuran)));
@@ -144,12 +161,14 @@ $$<HTMLButtonElement>("[data-ukuran]").forEach((b) =>
 
 /* ---------- daerahmu ---------- */
 function gambarDaerah() {
-  const h = hitungBulan(bulanTerpilih);
-  const k = h.per.get(pilihan.id);
+  // Cukup satu daerah; tidak perlu menunggu hisab 514 daerah.
+  const k = hisabDaerah(bulanTerpilih, pilihan);
   if (!k) return;
+  const { pengamatan } = pengamatanBulan(bulanTerpilih);
   const z = zona(pilihan);
-  const besok = hisab(lat(pilihan), lon(pilihan), z, tambahHari(h.pengamatan, 1), bulanTerpilih.waktu);
-  $("[data-judul-langit]").innerHTML = `${esc(pilihan.nama)}, magrib ${teksTanggal(h.pengamatan)} pukul ${teksJam(k.magrib, z)} ${namaZona(z)} <span class="redup">· sabit diperbesar</span>`;
+  const besok = hisab(lat(pilihan), lon(pilihan), z, tambahHari(pengamatan, 1), bulanTerpilih.waktu);
+  $("[data-judul-langit]").innerHTML = `${esc(pilihan.nama)}, magrib ${teksTanggal(pengamatan)} pukul
+ ${teksJam(k.magrib, z)} ${namaZona(z)} <span class="redup">· sabit diperbesar</span>`;
   gambarLangit($("#langit"), k, besok);
   $("#langit").setAttribute("aria-label", `Langit barat ${pilihan.nama} saat magrib: hilal setinggi ${derajat(k.tinggi)} dengan elongasi ${derajat(k.elongasi)}.`);
   const isi: [string, string][] = [
@@ -309,13 +328,29 @@ gambarPilihBulan();
 gambarRingkas();
 gambarPetaIndonesia();
 gambarDaerah();
-muatPeta()
-  .then((p) => {
-    peta = p;
-    gambarPetaIndonesia();
-    hitungBertahap();
-  })
-  .catch(() => {
-    $("#peta").innerHTML = `<p class="gagal">Peta gagal dimuat. Muat ulang halaman.</p>`;
-    hitungBertahap();
-  });
+hitungBertahap();
+
+/** Jalankan `kerja` saat elemen hampir masuk layar (peta 514 daerah berat digambar, jadi jangan saat halaman baru dibuka). */
+function saatHampirTerlihat(el: Element, kerja: () => void) {
+  if (!("IntersectionObserver" in window)) return kerja();
+  const io = new IntersectionObserver(
+    (isi) => {
+      if (!isi.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      kerja();
+    },
+    { rootMargin: "250px 0px" },
+  );
+  io.observe(el);
+}
+saatHampirTerlihat($("#peta"), () => {
+  muatPeta()
+    .then((p) => {
+      peta = p;
+      gambarPetaIndonesia();
+    })
+    .catch(() => {
+      $("#peta").innerHTML = `<p class="gagal">Peta gagal dimuat. Muat ulang halaman.</p>`;
+    });
+});
+

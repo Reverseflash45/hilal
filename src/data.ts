@@ -45,14 +45,32 @@ export type HasilBulan = {
 
 const tembolok = new Map<number, HasilBulan>();
 
+/** Hari pengamatan: magrib hari ijtimak, atau sehari sesudahnya bila ijtimak terjadi sesudah magrib WIB. */
+export function pengamatanBulan(ij: Ijtimak): { pengamatan: Tanggal; setelahMagrib: boolean } {
+  const wib = new Date(ij.waktu.getTime() + 7 * 3_600_000);
+  const setelahMagrib = wib.getUTCHours() >= 18;
+  return { pengamatan: setelahMagrib ? tambahHari(tanggalLokal(ij.waktu, 7), 1) : tanggalLokal(ij.waktu, 7), setelahMagrib };
+}
+
+/** Hasil satu bulan bila sudah pernah dihitung (di sini atau di Web Worker). */
+export function sudahAda(ij: Ijtimak): HasilBulan | undefined {
+  return tembolok.get(ij.waktu.getTime());
+}
+
+/** Hisab satu daerah saja: murah, untuk kartu daerah selagi 514 daerah dihitung di Web Worker. */
+export function hisabDaerah(ij: Ijtimak, d: Daerah): Hisab | null {
+  const ada = sudahAda(ij)?.per.get(d.id);
+  if (ada) return ada;
+  return hisab(lat(d), lon(d), zona(d), pengamatanBulan(ij).pengamatan, ij.waktu);
+}
+
 export function hitungBulan(ij: Ijtimak): HasilBulan {
   const kunci = ij.waktu.getTime();
   const ada = tembolok.get(kunci);
   if (ada) return ada;
-  const wib = new Date(kunci + 7 * 3_600_000);
-  const setelahMagrib = wib.getUTCHours() >= 18;
-  const pengamatan = setelahMagrib ? tambahHari(tanggalLokal(ij.waktu, 7), 1) : tanggalLokal(ij.waktu, 7);
+  const { pengamatan, setelahMagrib } = pengamatanBulan(ij);
   const per = new Map<string, Hisab>();
+
   let tertinggi: { d: Daerah; h: Hisab } | null = null;
   let mabims = 0;
   let wujud = 0;
