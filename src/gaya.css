@@ -604,6 +604,22 @@ main,
   display: block;
   color: var(--tinta-2);
 }
+.tetangga {
+  margin: 22px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--garis-kuat);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--samar);
+}
+.tetangga a {
+  color: var(--tinta-2);
+  text-underline-offset: 3px;
+}
+.tetangga a:hover {
+  color: var(--aksen);
+}
+
 
 /* ---------- kalender ---------- */
 .tabel-bungkus {

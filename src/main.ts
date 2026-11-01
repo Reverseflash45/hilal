@@ -25,6 +25,7 @@ import {
   zona,
 } from "./data";
 import { type Ijtimak, MABIMS, NAMA_BULAN, daftarIjtimak, hisab, memenuhiMabims, memenuhiWujud, tambahHari } from "./hilal";
+import { htmlTetangga } from "./tetangga";
 import { type Peta, type TitikSebar, type Ukuran, esc, gambarLangit, gambarLegenda, gambarPeta, gambarSebar, muatPeta } from "./vis";
 
 const $ = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s)!;
@@ -166,7 +167,9 @@ function gambarDaerah() {
   $("[data-cek]").innerHTML =
     `<li class="${mab ? "ya" : "tidak"}"><span aria-hidden="true">${mab ? "✓" : "✕"}</span><div><strong>MABIMS ${mab ? "terpenuhi" : "belum terpenuhi"}</strong>${mab ? "" : `<small>${alasan}</small>`}</div></li>` +
     `<li class="${wuj ? "ya" : "tidak"}"><span aria-hidden="true">${wuj ? "✓" : "✕"}</span><div><strong>Wujudul hilal ${wuj ? "terpenuhi" : "belum terpenuhi"}</strong>${wuj ? "" : `<small>${k.umur <= 0 ? "ijtimak belum terjadi saat magrib" : "bulan terbenam lebih dulu"}</small>`}</div></li>`;
+  $("[data-tetangga]").innerHTML = htmlTetangga(pilihan.id, pilihan.nama, "hilal");
 }
+
 
 function pilihDaerah(d: Daerah) {
   pilihan = d;
